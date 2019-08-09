@@ -5,13 +5,13 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 
 import classes from './Toolbar.css';
 
-const toolbar = ()=>(
+const toolbar = (props)=>(
 
     <header className= { classes.Toolbar }>
         <div> MENU </div>
-       <Logo />        
+       <Logo height="80%" />       
        
-        <nav>
+        <nav className= { classes.DesktopOnly }>
             <NavigationItems />      
         </nav> 
     </header>

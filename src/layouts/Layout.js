@@ -2,18 +2,43 @@ import React from 'react'
 import Aux  from '../hoc/Aux';
 
 import classes from './Layout.css'
+
 import Toolbar from '../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../components/Navigation/SideDrawer/SideDrawer';
+import Backdrop from '../components/UI/Backdrop/BackDrop';
 
-const layout = (props)=>(
+class Layout extends React.Component{
 
-	<Aux> 
-		<Toolbar /> 
-		<SideDrawer />
+	constructor(props){
+		super(props);
 
-		<main className = { classes.Content }> { props.children }</main>
-	
-	</Aux>
-);
+		this.state ={
+			show : true
+		}
+	}
 
-export default layout;
+	toogleSideDrawer = ()=>{
+
+		this.setState({
+			show: !this.state.show
+		})
+	}
+	render(){
+			
+		return(
+
+			<Aux> 
+				<Toolbar /> 
+				<SideDrawer show={ this.state.show } />
+
+				<main className = { classes.Content }> { this.props.children }</main>
+
+				<Backdrop
+					show={ this.state.show }
+					click = { this.toogleSideDrawer }
+				/>
+			</Aux>
+		);
+	}	
+}
+export default Layout;
