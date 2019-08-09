@@ -28,7 +28,7 @@ class Layout extends React.Component{
 		return(
 
 			<Aux> 
-				<Toolbar /> 
+				<Toolbar click={ this.toogleSideDrawer }/> 
 				<SideDrawer show={ this.state.show } />
 
 				<main className = { classes.Content }> { this.props.children }</main>
