@@ -3,16 +3,26 @@ import Aux from '../../../hoc/Aux';
 import classes from './Modal.css';
 
 
-const modal = (props)=>(
+class Modal extends React.Component{
+    
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.show !== this.props.show;
+        
+    }
 
-    <Aux>
-        <div className= { classes.Modal}
-        style={{
-            transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-            opacity: props.show ? '1' : '0'
-        }}>
-            { props.children }
-        </div>
-    </Aux>
-)
-export default modal;
+    render(){
+        return(
+
+            <Aux>
+                <div className= { classes.Modal}
+                style={{
+                    transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
+                    opacity: this.props.show ? '1' : '0'
+                }}>
+                    { this.props.children }
+                </div>
+            </Aux>
+        )
+    }
+} 
+export default Modal;

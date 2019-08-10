@@ -13,12 +13,13 @@ class Layout extends React.Component{
 		super(props);
 
 		this.state ={
-			show : true
+			show : false
 		}
 	}
 
 	toogleSideDrawer = ()=>{
-
+		console.log(this.state.show);
+		
 		this.setState({
 			show: !this.state.show
 		})

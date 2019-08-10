@@ -6,7 +6,9 @@ const drawerToggle = (props)=>(
 
     <div className={ classes.DrawerToggle }
         onClick={ props.click }> 
-        Menu
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
 )
 

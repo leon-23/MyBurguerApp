@@ -7,13 +7,14 @@ const orderedList = (props)=>(
         { 
             Object.keys(props.ingredients)
                 .map((igkey)=>(
-                    <ItemList key={ igkey }
-                     item = { igkey }
-                     cant = { props.ingredients[igkey] }
-                     />
-                ))
+            <ItemList   key={ igkey }
+                        item = { igkey }
+                        cant = { props.ingredients[igkey] }
+            />
+            ))
         }
-    </ul>
-);
+   </ul>   
+)
+
 
 export default orderedList;
