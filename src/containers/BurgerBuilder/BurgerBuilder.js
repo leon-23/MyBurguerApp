@@ -7,10 +7,11 @@ import Modal from '../../components/UI/Modal/Modal';
 import ModalContent from '../../components/Burger/ModalContent/ModalContent';
 import Button from '../../components/UI/Button/Button'
 import Backdrop from '../../components/UI/Backdrop/BackDrop';
-
+import Spinner from '../../components/UI/Spinner/spinner';
 //data
 import {INGREDIENTS, INGREDIENTS_PRICES} from '../../data/ingredients';
 
+import axios from '../../axios-orders';
 
 class BurgerBuilder extends React.Component {
 
@@ -20,7 +21,8 @@ class BurgerBuilder extends React.Component {
 		this.state = {
 			ingredients : INGREDIENTS,
 			totalPrice: 4,
-			modal : false
+			modal : false,
+			spinner : false
 		}
 	}
 
@@ -65,24 +67,79 @@ class BurgerBuilder extends React.Component {
 
 	toggleModal = ()=>{
 		this.setState({
-			modal: !this.state.modal
+			modal: !this.state.modal,
+		})
+	}
+
+	showSpinner = ()=>{
+		this.setState({
+			spinner : true
 		})
 	}
 
 	confirmOrder = ()=>{
-		this.reset();
-		alert("Gracias por su Compra");
+		
+		this.showSpinner();
+
+		  const order = {
+			ingredients: this.state.ingredients,
+			price: this.state.totalPrice,
+			customer: {
+				name: 'Luis León',
+				email: 'Leon@test.com',
+				adress: {
+					city: 'Barquisimeto',
+					country: 'Venezuela'
+				}
+			}
+		}
+		axios.post('/orders.json',order)
+			.then(response=>{
+				console.log(response)
+				this.reset();
+				alert("Gracias por su Compra");
+
+			})
+			.catch(err =>console.log(err))
 	}
 
 	reset = ()=>{
 		this.setState({
 			ingredients : INGREDIENTS,
 			totalPrice: 4,
-			modal : false
+			modal : false,
+			spinner: false
 		})
 	}
 
 	render(){
+		let content = null;
+		
+		if(this.state.spinner)
+			content = (<Spinner />) 
+		else{
+			content =(
+				<Aux>
+					<ModalContent 
+							ingredients = { this.state.ingredients }
+							price= { this.state.totalPrice.toFixed(2) } 
+						/>
+					<div>
+						<Button type="button" 
+								btnType= "Success" 
+								click = { this.confirmOrder }>
+								Confirmar 
+						</Button>
+						<Button type="button" 
+								btnType= "Danger" 
+								click = { this.toggleModal }>
+								Cancelar 
+						</Button>
+						</div>
+				</Aux>
+			)
+		}
+					
 		return(
 			<Aux>
 				<Burger ingredients= { this.state.ingredients }/>
@@ -94,22 +151,7 @@ class BurgerBuilder extends React.Component {
 					clickModal = { this.toggleModal }
 				/>
 				<Modal show={ this.state.modal }>
-					<ModalContent 
-						ingredients = { this.state.ingredients }
-						price= { this.state.totalPrice.toFixed(2) } 
-					/>
-					<div>
-						<Button type="button" 
-							btnType= "Success" 
-							click = { this.confirmOrder }>
-								Confirmar 
-						</Button>
-						<Button type="button" 
-							btnType= "Danger" 
-							click = { this.toggleModal }>
-								Cancelar 
-						</Button>
-					</div>
+					{ content }	
 				</Modal>
 				<Backdrop show={ this.state.modal }  
 					click= { this.toggleModal }
@@ -120,4 +162,3 @@ class BurgerBuilder extends React.Component {
 }
 
 export default BurgerBuilder;
-
