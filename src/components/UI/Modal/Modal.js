@@ -6,7 +6,12 @@ import classes from './Modal.css';
 class Modal extends React.Component{
     
     shouldComponentUpdate(nextProps, nextState) {
+<<<<<<< HEAD
         return nextProps.show !== this.props.show;
+=======
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
+        
+>>>>>>> 353169824bb9bbe90761987b1f27d1258631cbd6
     }
 
     render(){
