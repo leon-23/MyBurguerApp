@@ -6,8 +6,9 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import ModalContent from '../../components/Burger/ModalContent/ModalContent';
 import Button from '../../components/UI/Button/Button'
-import Backdrop from '../../components/UI/Backdrop/BackDrop';
 import Spinner from '../../components/UI/Spinner/spinner';
+import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
+
 //data
 import {INGREDIENTS, INGREDIENTS_PRICES} from '../../data/ingredients';
 
@@ -73,13 +74,14 @@ class BurgerBuilder extends React.Component {
 
 	showSpinner = ()=>{
 		this.setState({
-			spinner : true
+			spinner : !this.state.spinner
 		})
 	}
 
 	confirmOrder = ()=>{
 		
 		this.showSpinner();
+		
 
 		  const order = {
 			ingredients: this.state.ingredients,
@@ -93,14 +95,18 @@ class BurgerBuilder extends React.Component {
 				}
 			}
 		}
-		axios.post('/orders.json',order)
+		axios.post('/orders',order)
 			.then(response=>{
 				console.log(response)
-				this.reset();
-				alert("Gracias por su Compra");
+				this.reset()
+				alert("Gracias por su Compra")
 
 			})
-			.catch(err =>console.log(err))
+			.catch(err =>{
+				console.log(err)
+				this.toggleModal()
+				console.log("cathc err work")
+			})
 	}
 
 	reset = ()=>{
@@ -150,15 +156,12 @@ class BurgerBuilder extends React.Component {
 					order = { this.orderNow() }
 					clickModal = { this.toggleModal }
 				/>
-				<Modal show={ this.state.modal }>
+				<Modal show={ this.state.modal } click= { this.toggleModal } >
 					{ content }	
 				</Modal>
-				<Backdrop show={ this.state.modal }  
-					click= { this.toggleModal }
-				/>
 			</Aux>
 		)
 	}
 }
 
-export default BurgerBuilder;
+export default WithErrorHandler(BurgerBuilder, axios);
