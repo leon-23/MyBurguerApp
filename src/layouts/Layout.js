@@ -18,8 +18,6 @@ class Layout extends React.Component{
 	}
 
 	toogleSideDrawer = ()=>{
-		console.log(this.state.show);
-		
 		this.setState({
 			show: !this.state.show
 		})
@@ -27,7 +25,6 @@ class Layout extends React.Component{
 	render(){
 			
 		return(
-
 			<Aux> 
 				<Toolbar click={ this.toogleSideDrawer }/> 
 				<SideDrawer show={ this.state.show } />

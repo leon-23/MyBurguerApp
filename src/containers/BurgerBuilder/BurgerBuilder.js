@@ -13,6 +13,7 @@ import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 import {INGREDIENTS, INGREDIENTS_PRICES} from '../../data/ingredients';
 
 import axios from '../../axios-orders';
+import orderService from '../../service/OrderService';
 
 class BurgerBuilder extends React.Component {
 
@@ -25,6 +26,16 @@ class BurgerBuilder extends React.Component {
 			modal : false,
 			spinner : false
 		}
+		this.orderService = new orderService();
+	}
+
+	componentDidMount(){
+		
+		 this.orderService.getIngredientes().then(resp=>{
+			this.setState({
+				ingredients: resp.data
+			})	
+		}).catch(err => { console.log(err)})
 	}
 
 	addIngredient = (key)=>{
@@ -78,10 +89,8 @@ class BurgerBuilder extends React.Component {
 		})
 	}
 
-	confirmOrder = ()=>{
-		
+	confirmOrder = ()=>{		
 		this.showSpinner();
-		
 
 		  const order = {
 			ingredients: this.state.ingredients,
@@ -95,7 +104,7 @@ class BurgerBuilder extends React.Component {
 				}
 			}
 		}
-		axios.post('/orders',order)
+		this.orderService.saveOrder(order)
 			.then(response=>{
 				console.log(response)
 				this.reset()
