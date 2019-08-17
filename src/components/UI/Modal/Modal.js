@@ -7,7 +7,6 @@ class Modal extends React.Component{
     
     shouldComponentUpdate(nextProps, nextState) {
         return nextProps.show !== this.props.show;
-        
     }
 
     render(){
