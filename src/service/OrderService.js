@@ -1,6 +1,10 @@
 import axios from '../axios-orders';
 
-export default class OrderService {
+ class OrderService {
+
+    constructor(){
+        console.log("OrderService instance");
+    }
 
     getIngredientes = ()=>{
         return axios.get('/ingredients.json');
@@ -10,3 +14,7 @@ export default class OrderService {
         return axios.post('/orders.json',order);
     }
 }
+
+const orderService = new OrderService();
+
+export default orderService;

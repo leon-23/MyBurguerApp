@@ -26,12 +26,12 @@ class BurgerBuilder extends React.Component {
 			modal : false,
 			spinner : false
 		}
-		this.orderService = new orderService();
+		//this.orderService = new orderService();
 	}
 
 	componentDidMount(){
 		
-		 this.orderService.getIngredientes().then(resp=>{
+		 orderService.getIngredientes().then(resp=>{
 			this.setState({
 				ingredients: resp.data
 			})	
@@ -104,7 +104,7 @@ class BurgerBuilder extends React.Component {
 				}
 			}
 		}
-		this.orderService.saveOrder(order)
+		orderService.saveOrder(order)
 			.then(response=>{
 				console.log(response)
 				this.reset()
