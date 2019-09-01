@@ -90,7 +90,7 @@ class BurgerBuilder extends React.Component {
 	}
 
 	confirmOrder = ()=>{		
-		this.showSpinner();
+		/* this.showSpinner();
 
 		  const order = {
 			ingredients: this.state.ingredients,
@@ -115,7 +115,15 @@ class BurgerBuilder extends React.Component {
 				console.log(err)
 				this.toggleModal()
 				console.log("cathc err work")
-			})
+			}) */
+			const order =  JSON.stringify({
+				ingredients: this.state.ingredients,
+				price: this.state.totalPrice
+			 })
+
+			 
+		this.props.history.push('/checkout/'.concat(order));
+		
 	}
 
 	reset = ()=>{
@@ -168,6 +176,8 @@ class BurgerBuilder extends React.Component {
 				<Modal show={ this.state.modal } click= { this.toggleModal } >
 					{ content }	
 				</Modal>
+
+				
 			</Aux>
 		)
 	}
