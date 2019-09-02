@@ -43,7 +43,7 @@ class CheckoutSumary extends React.Component {
     ordenar =(customer) =>{
         const order = {
             ingredients: this.state.ingredients,
-            totalPrice : this.state.totalPrice,
+            price : this.state.totalPrice,
             customer: customer
         }
 
@@ -74,7 +74,6 @@ class CheckoutSumary extends React.Component {
                 <Route exact path={ '/checkout/contact' }
                      render={()=> (<ContactData ordenar={ this.ordenar }/> )}
                 />
-                { this.state.totalPrice }
             </div>  
         )   
     }

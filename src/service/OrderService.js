@@ -13,6 +13,10 @@ import axios from '../axios-orders';
     saveOrder = (order)=>{
         return axios.post('/orders.json',order);
     }
+
+    findAll(){
+        return axios.get('/orders.json');
+    }
 }
 
 const orderService = new OrderService();
