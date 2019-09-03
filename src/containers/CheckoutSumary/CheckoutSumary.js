@@ -20,19 +20,25 @@ class CheckoutSumary extends React.Component {
         }
     }
 
-    componentDidMount(){
-
-        let data = JSON.parse(this.props.match.params.ingredients);
+    componentDidMount(){  
+        let data;
         
-         this.setState({
-            ingredients: data['ingredients'],
-            totalPrice : data['price'],
-            spinner: false
-        }); 
+        try {
+             data = JSON.parse(this.props.match.params.ingredients);
+
+             this.setState({
+                ingredients: data['ingredients'],
+                totalPrice : data['price'],
+                spinner: false
+            }); 
+        }catch(error) {
+            console.log(error)
+            this.cancelar()
+        }
     }
 
     cancelar = ()=>{        
-        this.props.history.goBack();  
+        this.props.history.replace('/')  
     }
 
     continuar = ()=>{
