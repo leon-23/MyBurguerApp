@@ -1,18 +1,17 @@
 import React from 'react'
-import Aux from '../../hoc/Aux';
+import { connect } from 'react-redux'
+import * as options from '../../store/actions';
 
+import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import ModalContent from '../../components/Burger/ModalContent/ModalContent';
 import Button from '../../components/UI/Button/Button'
 import Spinner from '../../components/UI/Spinner/spinner';
-import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 
-//data
-import {INGREDIENTS, INGREDIENTS_PRICES} from '../../data/ingredients';
 
-import axios from '../../axios-orders';
+//import axios from '../../axios-orders';
 import orderService from '../../service/OrderService';
 
 class BurgerBuilder extends React.Component {
@@ -21,60 +20,44 @@ class BurgerBuilder extends React.Component {
 		super(props);
 
 		this.state = {
-			ingredients : INGREDIENTS,
-			totalPrice: 4,
 			modal : false,
 			spinner : false
 		}
-		//this.orderService = new orderService();
 	}
 
 	componentDidMount(){
-		
-		 orderService.getIngredientes().then(resp=>{
-			this.setState({
-				ingredients: resp.data
-			})	
-		}).catch(err => { console.log(err)})
-	}
-
-	addIngredient = (key)=>{
-		const ingredients = { ...this.state.ingredients };
-		let price = this.state.totalPrice;
-
-		ingredients[key] = ingredients[key] + 1;
-		price += INGREDIENTS_PRICES[key];
-
-		this.setState({
-			ingredients : ingredients,
-			totalPrice : price
+		console.log("BurgerBuilder DidMount");
+		orderService.getIngredientes()
+		.then(resp=>{
+			this.props.setAll(resp.data, 4)
 		})
+		.catch(err => { console.log(err)})
 	}
-	
+
+
 	removeIngredient = (key)=>{
-		const ingredients = { ...this.state.ingredients };
-		
-		if(ingredients[key] < 1)
+		const ingredients = { ...this.props.ing };
+
+		if(ingredients[key].cant < 1)
 			return;
 
-		let price = this.state.totalPrice;
+		let price = this.props.tp;
 
-		ingredients[key] = ingredients[key] - 1;
-		price -= INGREDIENTS_PRICES[key];
+		ingredients[key].cant = ingredients[key].cant - 1;
+		price -= ingredients[key].price;
 
-		this.setState({
-			ingredients : ingredients,
-			totalPrice : price
-		})
+		this.props.removeIngredient(ingredients, price);
+
+
 	}
 	//habilita, deshabilita el boton de quitar ingredientes
 	disabledButtonLess = (key)=>(
-		this.state.ingredients[key] ===  0 ? true : false
+		this.props.ing[key].cant ===  0 ? true : false
 	)
-	
+
 	//habilita, deshabilita el boton de ordenar
 	orderNow = ()=>(
-		this.state.totalPrice <= 4 ? true : false 
+		this.props.tp <= 4 ? true : false
 	)
 
 	toggleModal = ()=>{
@@ -89,98 +72,73 @@ class BurgerBuilder extends React.Component {
 		})
 	}
 
-	confirmOrder = ()=>{		
-		/* this.showSpinner();
-
-		  const order = {
-			ingredients: this.state.ingredients,
-			price: this.state.totalPrice,
-			customer: {
-				name: 'Luis León',
-				email: 'Leon@test.com',
-				adress: {
-					city: 'Barquisimeto',
-					country: 'Venezuela'
-				}
-			}
-		}
-		orderService.saveOrder(order)
-			.then(response=>{
-				console.log(response)
-				this.reset()
-				alert("Gracias por su Compra")
-
-			})
-			.catch(err =>{
-				console.log(err)
-				this.toggleModal()
-				console.log("cathc err work")
-			}) */
-			const order =  JSON.stringify({
-				ingredients: this.state.ingredients,
-				price: this.state.totalPrice
-			 })
-
-			 
-		this.props.history.push('/checkout/'.concat(order));
-		
+	confirmOrder = ()=>{
+		this.props.setAll(this.props.ing, this.props.tp)
+		this.props.history.push('/checkout');
 	}
 
-	reset = ()=>{
-		this.setState({
-			ingredients : INGREDIENTS,
-			totalPrice: 4,
-			modal : false,
-			spinner: false
-		})
-	}
 
 	render(){
-		let content = null;
-		
-		if(this.state.spinner)
-			content = (<Spinner />) 
-		else{
-			content =(
-				<Aux>
-					<ModalContent 
-							ingredients = { this.state.ingredients }
-							price= { this.state.totalPrice.toFixed(2) } 
-						/>
-					<div>
-						<Button type="button" 
-								btnType= "Success" 
-								click = { this.confirmOrder }>
-								Confirmar 
-						</Button>
-						<Button type="button" 
-								btnType= "Danger" 
-								click = { this.toggleModal }>
-								Cancelar 
-						</Button>
-						</div>
-				</Aux>
-			)
-		}
-					
+		const content = this.state.spinner ?
+		 					<Spinner /> :
+							<Aux>
+								<ModalContent
+										ingredients = { this.props.ing }
+										price= { this.props.tp.toFixed(2) }
+								/>
+								<div>
+										<Button type="button"
+												btnType= "Success"
+												click = { this.confirmOrder }>
+												Confirmar
+										</Button>
+										<Button type="button"
+												btnType= "Danger"
+												click = { this.toggleModal }>
+												Cancelar
+										</Button>
+								</div>
+							 </Aux>
+
 		return(
 			<Aux>
-				<Burger ingredients= { this.state.ingredients }/>
-				<BuildControls clickMore = { this.addIngredient }
+				<Burger ingredients= { this.props.ing }/>
+				<BuildControls clickMore = { this.props.addIngredient }
 					clickLess = { this.removeIngredient }
-					price = { this.state.totalPrice }
+					price = { this.props.tp }
 					disabled = { this.disabledButtonLess }
 					order = { this.orderNow() }
 					clickModal = { this.toggleModal }
 				/>
 				<Modal show={ this.state.modal } click= { this.toggleModal } >
-					{ content }	
+					{ content }
 				</Modal>
 
-				
+
 			</Aux>
 		)
 	}
 }
 
-export default WithErrorHandler(BurgerBuilder, axios);
+const mapStateToProps = state =>({
+
+	ing : state.ingredients,
+	tp : state.totalPrice
+})
+
+const mapDispatchToProps = dispatch => ({
+
+	setAll: (ingredients, totalPrice)=> dispatch({
+	 		type: options.setAll,
+	 		ingredients: ingredients,
+	 		totalPrice: totalPrice
+	 }),
+	addIngredient: (key) => dispatch({type: options.add , key: key }),
+	removeIngredient: (ingredients, totalPrice) => dispatch({
+			type: options.remove ,
+			ingredients: ingredients,
+			totalPrice: totalPrice
+	}),
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(BurgerBuilder);

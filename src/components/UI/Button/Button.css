@@ -22,3 +22,9 @@
 .Danger {
     color: #944317;
 }
+
+.Invalid {
+    cursor: not-allowed;
+    color: rgb(160, 133, 133)
+
+}

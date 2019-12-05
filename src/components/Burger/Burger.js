@@ -5,17 +5,16 @@ import classes from './Burger.css'
 import BurgerIngredient from './BurgerIngredients/BurgerIngredients'
 
 const burger = (props)=>{
-
         let ingredients = [];
-         Object.keys(props.ingredients)
-            .forEach((x) => {
-                for(let i = 0; i< props.ingredients[x]; i++){
-                   ingredients.push( <BurgerIngredient key = {x.concat(i)} 
-                                        type={ x } />) 
+        Object.keys(props.ingredients)
+            .forEach((key) => {
+                for(let i = 0; i< props.ingredients[key].cant; i++){
+                   ingredients.push( <BurgerIngredient key = {key.concat(i)} 
+                                        type={ key } />) 
                 }
             } );
        
-        if(ingredients.length === 0)
+        if(!ingredients.length)
             ingredients = <p> Añada los ingredientes, por favor </p>
     return (
         <div className= { classes.Burger }>

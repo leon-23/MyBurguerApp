@@ -1,11 +1,39 @@
 import React from 'react';
 
 import Button  from '../../UI/Button/Button';
+import Input from '../../UI/Input/Input';
 
 import classes from './ContactData.css';
+import inputsConfig from './inputsConfig';
 
 const contactData = (
     class  extends React.Component {
+
+        constructor(props){
+            super(props);
+
+            this.state={
+                inputs: inputsConfig
+            }   
+        }
+
+        onChangeHandler = (event)=>{
+            let key = event.target.name;
+
+           const inputs = {...this.state.inputs };
+           const inputEdit = {...inputs[key] } ;
+
+           if(!inputEdit.touched)
+                inputEdit.touched = true;
+
+            inputEdit.valid = event.target.value.length > 3 ? true : false; 
+            
+            inputs[key] = inputEdit;
+            
+            this.setState({
+                inputs : inputs
+            })
+        }
 
         order =(event)=>{
             event.preventDefault();
@@ -23,25 +51,43 @@ const contactData = (
             this.props.ordenar(customer)
             form.reset();
         }
-        
+       
         render(){
+            const inputs = [];
+            let disabled = false; //habililar Boton de ordernar
+
+            for(let key in this.state.inputs){
+                inputs.push( 
+                    <Input 
+                        key={ key }
+                         inputType={ this.state.inputs[key].inputType }
+                         config={ this.state.inputs[key].config } 
+                         change={ this.onChangeHandler }
+                         valid={ this.state.inputs[key].valid }
+                         touched={ this.state.inputs[key].touched }
+                    />
+                )
+                
+                if(!this.state.inputs[key].valid)
+                    disabled = true
+            }
+            
+
             return(
                 <div className={ classes.ContactData}>
                     <h3> Ingrese sus Datos de Contacto </h3>
 
                     <form onSubmit={ this.order }>
-                        <input className={ classes.Input } type="text" name="name" placeholder="Su nombre" />
-                        <input className={ classes.Input } type="email" name="email" placeholder="Su email" />
-                        <input className={ classes.Input } type="text" name="country" placeholder="País" />
-                        <input className={ classes.Input } type="text" name="city" placeholder="Ciudad" />
+                       
+                       { inputs }
 
-                        <Button type="submit" btnType="Success" > Ordenar </Button>  
+                        <Button type="submit" btnType="Success" disabled={ disabled }> Ordenar </Button>  
                     </form>
 
                 </div>
             )
         }
     }
-    )
+)
 
 export default contactData;

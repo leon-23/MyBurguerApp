@@ -5,7 +5,7 @@ const order = (props)=>{
     const ingredients = [];
 
    for(let key in props.ingredients){
-            ingredients.push( <span key={key}> {key}: { props.ingredients[key] } </span>)
+            ingredients.push( <span key={key}> {key}: { props.ingredients[key].cant } </span>)
    }
 
    return(

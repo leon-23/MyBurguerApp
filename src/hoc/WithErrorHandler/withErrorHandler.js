@@ -1,9 +1,10 @@
 import React from 'react';
+import axios from '../../axios-orders';
 
 import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../Aux';
 
-const withErrorHandler = ( WrappedComponent, axios )=>{
+const withErrorHandler = ( WrappedComponent)=>{
 
      return class extends React.Component {
        

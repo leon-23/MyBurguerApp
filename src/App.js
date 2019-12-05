@@ -6,6 +6,8 @@ import BurguerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import CheckoutSumary from './containers/CheckoutSumary/CheckoutSumary';
 import Orders from './containers/Orders/Orders';
 
+import WithErrorHandler from './hoc/WithErrorHandler/withErrorHandler';
+
 function App() {
   return (
     <div className="App">
@@ -14,7 +16,7 @@ function App() {
 
             <Switch>
               <Route  exact path="/" component={ BurguerBuilder } />
-              <Route  path="/checkout/:ingredients" component={ CheckoutSumary } />
+              <Route  path="/checkout" component={ CheckoutSumary } />
               <Route  exact path="/orders" component={ Orders } />
               </Switch>
          </Layout>
@@ -23,4 +25,4 @@ function App() {
   );
 }
 
-export default App;
+export default WithErrorHandler(App);

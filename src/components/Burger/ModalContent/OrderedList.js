@@ -9,7 +9,7 @@ const orderedList = (props)=>(
                 .map((igkey)=>(
             <ItemList   key={ igkey }
                         item = { igkey }
-                        cant = { props.ingredients[igkey] }
+                        cant = { props.ingredients[igkey].cant }
             />
             ))
         }

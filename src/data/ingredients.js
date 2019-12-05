@@ -1,18 +1,22 @@
 const INGREDIENTS = {
-    salad : 0,
-    bacon : 0,
-    cheese : 0,
-    meat : 0
+    salad : {
+        cant: 0,
+        price : 0.5
+    },
+    bacon :{
+        cant: 0,
+        price : 0.7
+    },
+    cheese : {
+        cant: 0,
+        price : 0.7
+    },
+    meat : {
+        cant: 0,
+        price : 2
+    },
 }
 
-const INGREDIENTS_PRICES = {
-    salad : 0.5,
-    bacon : 0.7,
-    cheese : 0.4,
-    meat : 1.3
-}
 
-export {
-    INGREDIENTS,
-    INGREDIENTS_PRICES
-}
+
+export default INGREDIENTS
