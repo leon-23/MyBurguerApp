@@ -80,4 +80,4 @@ const mapStateToProps = state =>({
     tp : state.totalPrice
 })
 
-export default connect(mapStateToProps,null)(CheckoutSumary);
+export default connect(mapStateToProps)(CheckoutSumary);

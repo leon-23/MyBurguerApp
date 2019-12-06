@@ -6,6 +6,17 @@ const initialState = {
 	totalPrice : 4
 }
 
+const add = (state, key)=> {
+	const ingredients = { ...state.ingredients };
+	const totalPrice = state.totalPrice +  ingredients[key].price;		
+	ingredients[key].cant++
+
+	return {
+		ingredients,
+		totalPrice 
+	}
+}
+
 const reducer = ( state = initialState, action) =>{
 
 	switch(action.type){
@@ -17,24 +28,14 @@ const reducer = ( state = initialState, action) =>{
 			}
 
 		case options.add :
-			const ingredients = { ...state.ingredients };
-			let price = state.totalPrice;
-			
-			ingredients[action.key].cant = ingredients[action.key].cant + 1;
-			price += ingredients[action.key].price;
-
-			return {
-				ingredients : ingredients,
-				totalPrice : price
-			}
+			return add(state, action.key )
 
 		case options.remove :
 
 			return {
 				ingredients : action.ingredients,
 				totalPrice : action.totalPrice
-			}
-			
+			}		
 		default:
 			return state;
 	}

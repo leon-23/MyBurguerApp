@@ -41,15 +41,12 @@ class BurgerBuilder extends React.Component {
 		if(ingredients[key].cant < 1)
 			return;
 
-		let price = this.props.tp;
-
-		ingredients[key].cant = ingredients[key].cant - 1;
-		price -= ingredients[key].price;
+		ingredients[key].cant--;
+		const price = this.props.tp -  ingredients[key].price;
 
 		this.props.removeIngredient(ingredients, price);
-
-
 	}
+
 	//habilita, deshabilita el boton de quitar ingredientes
 	disabledButtonLess = (key)=>(
 		this.props.ing[key].cant ===  0 ? true : false
@@ -80,25 +77,25 @@ class BurgerBuilder extends React.Component {
 
 	render(){
 		const content = this.state.spinner ?
-		 					<Spinner /> :
-							<Aux>
-								<ModalContent
-										ingredients = { this.props.ing }
-										price= { this.props.tp.toFixed(2) }
-								/>
-								<div>
-										<Button type="button"
-												btnType= "Success"
-												click = { this.confirmOrder }>
-												Confirmar
-										</Button>
-										<Button type="button"
-												btnType= "Danger"
-												click = { this.toggleModal }>
-												Cancelar
-										</Button>
-								</div>
-							 </Aux>
+		 	<Spinner /> :
+			<Aux>
+				<ModalContent
+					ingredients = { this.props.ing }
+					price= { this.props.tp.toFixed(2) }
+				/>
+				<div>
+					<Button type="button"
+							btnType= "Success"
+							click = { this.confirmOrder } >
+							Confirmar
+					</Button>
+					<Button type="button"
+							btnType= "Danger"
+							click = { this.toggleModal  }>
+							Cancelar
+					</Button>
+				</div>
+			</Aux>
 
 		return(
 			<Aux>
