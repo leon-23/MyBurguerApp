@@ -44,7 +44,7 @@ class BurgerBuilder extends React.Component {
 		ingredients[key].cant--;
 		const price = this.props.tp -  ingredients[key].price;
 
-		this.props.removeIngredient(ingredients, price);
+		this.props.setAll(ingredients, price);
 	}
 
 	//habilita, deshabilita el boton de quitar ingredientes
@@ -110,8 +110,6 @@ class BurgerBuilder extends React.Component {
 				<Modal show={ this.state.modal } click= { this.toggleModal } >
 					{ content }
 				</Modal>
-
-
 			</Aux>
 		)
 	}
@@ -131,11 +129,11 @@ const mapDispatchToProps = dispatch => ({
 	 		totalPrice: totalPrice
 	 }),
 	addIngredient: (key) => dispatch({type: options.add , key: key }),
-	removeIngredient: (ingredients, totalPrice) => dispatch({
+	/*removeIngredient: (ingredients, totalPrice) => dispatch({
 			type: options.remove ,
 			ingredients: ingredients,
 			totalPrice: totalPrice
-	}),
+	}),*/
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(BurgerBuilder);

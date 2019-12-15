@@ -21,21 +21,21 @@ const reducer = ( state = initialState, action) =>{
 
 	switch(action.type){
 
-		case options.setAll :
+		case options.setAll:
 			return{
 				ingredients : action.ingredients,
 				totalPrice: action.totalPrice
 			}
 
-		case options.add :
+		case options.add:
 			return add(state, action.key )
 
-		case options.remove :
+		/*case options.remove :
 
 			return {
 				ingredients : action.ingredients,
 				totalPrice : action.totalPrice
-			}		
+			}*/		
 		default:
 			return state;
 	}

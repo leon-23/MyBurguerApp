@@ -57,19 +57,21 @@ class CheckoutSumary extends React.Component {
 
     render(){   
        const  content =  this.state.spinner ? <Spinner /> 
-            : <Checkout 
-                ingredients= { this.props.ing }
-                cancel={ this.cancelar } 
-                continue={ this.continuar }   
-            />; 
-        
-        return(
-            <div>
-                { content }
+            : <React.Fragment>
+                <Checkout 
+                    ingredients= { this.props.ing }
+                    cancel={ this.cancelar } 
+                    continue={ this.continuar }   
+                />; 
                 <Route exact path={ '/checkout/contact' }
                      render={()=> (<ContactData ordenar={ this.ordenar }/> )}
                 />
-            </div>  
+              </React.Fragment> 
+        
+        return(
+        <div> 
+             { content }
+        </div>
         )   
     }
 }
